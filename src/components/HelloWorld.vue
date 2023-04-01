@@ -1,9 +1,22 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import axios from "axios";
 
 defineProps<{ msg: string }>()
 
 const count = ref(0)
+const apiEndpoint: string = import.meta.env.VITE_FIREBASE_REALTIME_DATABASE_API_ENDPOINT
+const apiKey: string = import.meta.env.VITE_FIREBASE_REALTIME_DATABASE_API_KEY
+
+  const firebaseRequest = (): void => {
+    const collection = 'todo-lists'
+    const url = `${apiEndpoint}${collection}.json?auth=${apiKey}`
+    axios.get<Object>(url)
+        .then(({data}) => console.log(data))
+        .catch((error: any) => console.log(error));
+
+  }
+
 </script>
 
 <template>
@@ -29,6 +42,10 @@ const count = ref(0)
     in your IDE for a better DX
   </p>
   <p class="read-the-docs">Click on the Vite and Vue logos to learn more</p>
+
+  <p>
+    <button @click="firebaseRequest">Request to the Firebase Realtime Database</button>
+  </p>
 </template>
 
 <style scoped>

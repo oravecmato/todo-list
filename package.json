@@ -14,9 +14,7 @@
     "vue": "^3.2.47",
     "vue-router": "^4.1.6",
     "vuelidate": "^0.7.7",
-    "vuetify": "^3.1.12"
-  },
-  "devDependencies": {
+    "vuetify": "^3.1.12",
     "@vitejs/plugin-vue": "^4.1.0",
     "typescript": "^4.9.3",
     "vite": "^4.2.0",

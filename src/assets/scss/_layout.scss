@@ -1,0 +1,118 @@
+#app {
+  width: 960px;
+  max-width: 100%;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.todo-list-card {
+  cursor: pointer;
+  position: relative;
+  transition: all 0.4s ease;
+  .remove-card-btn {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    visibility: hidden;
+  }
+  &:hover{
+    transition: all 0.8s ease;
+    background-color: rgba(128, 203, 196, 0.75);
+    &, .v-card-title {
+      color: #004D40;
+    }
+    .remove-card-btn {
+      visibility: visible;
+    }
+  }
+}
+
+.todo-item-card {
+  position: relative;
+
+  .remove-card-btn {
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    visibility: hidden;
+    opacity: 0.8;
+  }
+  &:hover {
+    .remove-card-btn {
+      visibility: visible;
+    }
+  }
+  .remove-card-btn:hover {
+    opacity: 1;
+  }
+}
+.todo-item-card__title {
+  padding-bottom: 13px;
+  font-size: 1.4em;
+}
+.todo-item-card__deadline {
+  position: absolute;
+  display: inline-block;
+  cursor: pointer;
+  right: 15px;
+  bottom: 15px;
+  opacity: 0.8;
+}
+
+.v-progress-circular__content {
+  margin-right: -5px;
+}
+.v-application{
+  background-color: transparent !important;
+}
+.todo-list-listing {
+  margin-bottom: 40px;
+}
+.add-new-list {
+  padding: 60px 30px;
+  background-color: #181c1d;
+}
+.v-breadcrumbs {
+  padding-left: 0;
+}
+
+.todo-list-items {
+  margin: 30px 0;
+  border-top: rgba(255,255,255,0.2) 1px solid;
+  padding-top: 30px;
+}
+.todo-list-items__filter {
+  margin-bottom: 13px;
+}
+.dp__main .dp__selection_preview {
+  width: 100%;
+  margin-bottom: 10px;
+  flex-grow: 1;
+  margin-top: -10px;
+}
+.dp__main .dp__action_row {
+  flex-wrap: wrap;
+}
+.dp__main .dp__action_buttons {
+  display: flex;
+  width: 100%;
+  flex-grow: 1;
+  .dp__cancel {
+    margin-left: auto;
+  }
+  .dp__select {
+    color: white;
+    display: inline-block;
+    padding: 4px 14px;
+    background: #474747;
+    margin-left: 7px;
+  }
+}
+.dp__input_wrap {
+  .v-field__field > input[type="text"] {
+    padding: 7px 30px 0 16px;
+  }
+  .dp__clear_icon {
+    top: 34px;
+  }
+}

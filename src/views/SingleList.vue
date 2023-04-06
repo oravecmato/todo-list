@@ -39,10 +39,10 @@ onUnmounted(() => deselect)
 
 </script>
 <template>
-  <v-breadcrumbs :items="[{title: 'My ToDo Lists', to: {name: 'home'}}, store.toDoList.name]" />
+  <v-breadcrumbs :items="[{title: 'My ToDo Lists', to: {name: 'home'}}, store.toDoList ? store.toDoList.name : '']" />
   <div class="text-left">
     <h1 class="text-h3 text-left">
-      {{ store.toDoList.name }}
+      {{ store.toDoList ? store.toDoList.name : '' }}
     </h1>
     <p>
       <small>To Do List</small>

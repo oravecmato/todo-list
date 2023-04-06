@@ -80,7 +80,7 @@ const setDone = (itemId: string): void => {
 </script>
 <template>
   <div class="todo-list-items">
-    <div class="todo-list-items__filter" v-show="store.toDoList.items.length">
+    <div class="todo-list-items__filter" v-show="store.toDoList?.items.length">
       <v-row>
         <v-col
             cols="12"
@@ -97,7 +97,7 @@ const setDone = (itemId: string): void => {
               v-model="store.activeFilter"
               label="Filter"
               density="comfortable"
-              hide-details="true"
+              :hide-details="true"
               variant="outlined"
               class="ml-3"
           ></v-select>

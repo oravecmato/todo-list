@@ -3,6 +3,7 @@ import {ToDoListDefinition} from "../typings/ToDoListDefinition";
 import {computed, reactive} from "vue";
 import {useVuelidate, ValidationRuleCollection} from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
+import {VuelidateErrorObj} from "../typings/VuelidateErrorObj";
 
 
 const initialState:ToDoListDefinition = {
@@ -33,7 +34,7 @@ const isFormValid = computed<boolean>(() => !v$.value.$invalid)
       <v-text-field
           v-model="formData.name"
           label="List name"
-          :error-messages="v$.name.$errors.map(e => e.$message)"
+          :error-messages="v$.name.$errors.map((e: VuelidateErrorObj) => e.$message)"
           required
           @input="v$.name.$touch"
           @blur="v$.name.$touch"

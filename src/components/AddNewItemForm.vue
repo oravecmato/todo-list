@@ -8,6 +8,7 @@ import {useCustomVuelidateRules} from "../composables/useCustomVuelidateRules"
 import {useMoment} from "../composables/useMoment";
 import {required} from "@vuelidate/validators";
 import {DATE_FORMAT} from "../constants";
+import {VuelidateErrorObj} from "../typings/VuelidateErrorObj";
 
 const {getFormattedDate} = useMoment()
 const initialState: ToDoItemDefinition = {
@@ -60,7 +61,7 @@ watch(deadlineRaw, (newValue) => {
       <v-text-field
           v-model="formData.title"
           label="Title"
-          :error-messages="v$.title.$errors.map(e => e.$message)"
+          :error-messages="v$.title.$errors.map((e: VuelidateErrorObj) => e.$message)"
           required
           @input="v$.title.$touch"
           @blur="v$.title.$touch"
@@ -88,7 +89,7 @@ watch(deadlineRaw, (newValue) => {
                   v-model="formData.deadline"
                   label="Deadline"
                   readonly
-                  :error-messages="v$.deadline.$errors.map(e => e.$message || 'Please select a realistic date in the future')"
+                  :error-messages="v$.deadline.$errors.map((e: VuelidateErrorObj) => e.$message || 'Please select a realistic date in the future')"
                   required
                   @blur="v$.deadline.$touch"
                   @change="v$.deadline.$touch"

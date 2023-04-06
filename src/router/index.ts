@@ -9,7 +9,7 @@ const routes: Array<RouteRecordRaw> = [
         component: ListListing,
     },
     {
-        path: "/list/:id?",
+        path: "/list/:id",
         name: "list",
         component: SingleList,
         props: (route: RouteLocationNormalized) => {

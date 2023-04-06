@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import {useFakeAuth} from "../../composables/useFakeAuth";
 
+const {signOutForever} = useFakeAuth()
 </script>
 <template>
   <v-app-bar
@@ -20,7 +22,7 @@
 
     <v-spacer></v-spacer>
 
-    <v-btn icon>
+    <v-btn icon @click="signOutForever">
       <v-icon>mdi-export</v-icon>
       <v-tooltip
           activator="parent"

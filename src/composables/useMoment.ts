@@ -9,6 +9,7 @@ interface MomentHelpers {
     isFuture: (date: string, format: string) => boolean
     isValidDate: (date: string, format?: string) => boolean
     isRealisticFuture: (date: string, format?: string) => boolean
+    toUnix: (date: string, format?: string) => number
 }
 
 type MomentInternalHelpers = Record<'weeks'|'days'|'hours'|'minutes', number>
@@ -68,17 +69,19 @@ export function useMoment(): MomentHelpers {
             return assessedDate.isAfter(now)
         },
 
-        isValidDate(date: string, format:string = DATE_FORMAT) {
+        isValidDate: (date: string, format: string = DATE_FORMAT) => {
             const assessedDate = moment(date, format, true);
             return assessedDate.isValid();
         },
 
-        isRealisticFuture(date: string, format:string = DATE_FORMAT) {
+        isRealisticFuture: (date: string, format: string = DATE_FORMAT) => {
             const assessedDate = moment(date, format, true);
             const now = moment()
             const lastAcceptableDate = moment().add(100, 'years');
             return assessedDate.isBetween(now, lastAcceptableDate)
-        }
+        },
+
+        toUnix: (date: string, format: string = DATE_FORMAT) => moment(date, format).valueOf()
     }
 }
 

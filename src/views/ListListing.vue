@@ -2,49 +2,27 @@
 import ToDoListCard from "../components/ToDoListCard.vue"
 import ConfirmDialog from "../components/ConfirmDialog.vue"
 import AddNewListForm from "../components/AddNewListForm.vue"
-
-import {computed, reactive, ref} from "vue";
-import type {ToDoList} from "../typings/ToDoList";
+import {computed, ref} from "vue";
 import {ToDoListDefinition} from "../typings/ToDoListDefinition";
 import {useRouter} from "vue-router";
+import {useToDoListStore} from "../stores/ToDoList";
 
-const todos = ref<ToDoList[]>([
-  {
-    id: 'abc',
-    name: 'My first to do list',
-    items: [
-      {
-        id: '2433gfjk',
-        title: 'This must be done first.',
-        text: 'Lorem ipsum...',
-        completed: false,
-        deadline: '2023-04-05'
-      }
-    ]
-  },
-  {
-    id: 'csd',
-    name: 'My second to do list',
-    items: [],
-  },
-  {
-    id: 'dfdfd',
-    name: 'My third to do list',
-    items: []
-  },
-  {
-    id: 'dsffd',
-    name: 'My fourth to do list',
-    items: [],
-  },
-])
+const store = useToDoListStore()
+const router = useRouter()
+
+// Local state
 
 let removeListDialogOpen = ref<boolean>(false)
 let listToDeleteId = ref<string|null>(null)
 let removeListDialogKey = ref<number>(Date.now())
 let showAddNewForm = ref<boolean>(false)
 
-const showAddNewFormBtnText = computed<string>(() => todos.value.length ? 'Got something else to do?' : 'Create your first To-Do List')
+// Mapping store and defining computed variables
+
+const toDoLists = store.toDoLists
+const showAddNewFormBtnText = computed<string>(() => toDoLists.length ? 'Got something else to do?' : 'Create your first To-Do List')
+
+// Methods
 
 const showRemoveListModal = (listId: string): void => {
   listToDeleteId.value = listId
@@ -53,29 +31,30 @@ const showRemoveListModal = (listId: string): void => {
 }
 
 const deleteList = (): void => {
-  console.log('List ' + listToDeleteId.value + 'deleted!')
+  store.removeToDoList(listToDeleteId.value!)
 }
 
-const router = useRouter()
-
 const createList = (formData: ToDoListDefinition): void => {
-  confirm(`hey you, this is your data: ${JSON.stringify(formData)}`) && router.push({
+  store.storeList(formData).then(id => router.push({
     name: 'list',
     params: {
-      id: 'hchvarn334'
+      id: id
     }
-  })
+  }))
 }
 </script>
 <template>
 
   <section class="todo-list-listing">
+    <h1 class="text-h3 mb-8">My ToDo Lists</h1>
+    <hr class="mb-8">
+
     <v-row>
       <ToDoListCard
-          v-for="todo in todos"
-          :model-value="todo"
+          v-for="list in toDoLists"
+          :model-value="list"
           @@delete="showRemoveListModal"
-          :key="todo.id"
+          :key="list.id"
       />
     </v-row>
   </section>

@@ -72,7 +72,7 @@
   padding: 60px 30px;
   background-color: #181c1d;
 }
-.v-breadcrumbs {
+.v-breadcrumbs, .v-breadcrumbs.v-breadcrumbs--density-default {
   padding-left: 0;
 }
 
@@ -115,4 +115,7 @@
   .dp__clear_icon {
     top: 34px;
   }
+}
+.v-btn.scale-on-hover:hover {
+  transform: scale(1.2);
 }

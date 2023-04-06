@@ -1,6 +1,6 @@
-export const API_ROOT_URL = import.meta.env.VITE_FIREBASE_REALTIME_DATABASE_API_ENDPOINT
-export const API_LISTS_URL = 'todo-lists.json'
-export const API_LIST_URL = 'todo-items.json'
+export const API_ROOT_URL = import.meta.env.VITE_CLOUD_FIRESTORE_API_URL
+export const API_TODO_LISTS_ENDPOINT = 'todo_lists'
+export const API_TODO_ITEMS_ENDPOINT = 'todo_items'
 
 export const TDL_ITEM_FILTER_ACTIVE = 'active'
 export const TDL_ITEM_FILTER_COMPLETED = 'completed'

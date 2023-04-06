@@ -1,5 +1,5 @@
 import axios, {AxiosInstance} from 'axios'
-import {API_ROOT_URL} from "@/constants"
+import {API_ROOT_URL} from "../constants"
 import type {CreateAxiosDefaults} from "axios";
 
 const options: CreateAxiosDefaults = {

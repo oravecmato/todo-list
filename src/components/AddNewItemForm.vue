@@ -2,7 +2,7 @@
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import {ToDoItemDefinition} from "../typings/ToDoItemDefinition";
-import {computed, reactive, watchEffect} from "vue";
+import {computed, reactive, ref, watch, watchEffect} from "vue";
 import {useVuelidate, ValidationRuleCollection} from "@vuelidate/core";
 import {useCustomVuelidateRules} from "../composables/useCustomVuelidateRules"
 import {useMoment} from "../composables/useMoment";
@@ -15,6 +15,7 @@ const initialState: ToDoItemDefinition = {
   text: '',
   deadline: ''
 }
+const deadlineRaw = ref<string|null>(null)
 
 const formatDate = (date: Date): string => {
   // @ts-ignore
@@ -24,9 +25,8 @@ const formatDate = (date: Date): string => {
   return getFormattedDate(DATE_FORMAT, date.getTime())
 }
 
-const formData: ToDoItemDefinition & {deadlineFormatted: string} = reactive({
-  ...initialState,
-  deadlineFormatted: ''
+const formData: ToDoItemDefinition = reactive({
+  ...initialState
 })
 
 const emit = defineEmits<{
@@ -34,7 +34,7 @@ const emit = defineEmits<{
 }>()
 
 const handleSubmit = (): void => {
-  if (isFormValid)
+  if (isFormValid.value)
     emit('@submit', formData);
 }
 
@@ -42,21 +42,14 @@ const standardDateRules = useCustomVuelidateRules()
 const rules: Record<string, ValidationRuleCollection> = {
   title: {required},
   text: {},
-  deadlineFormatted: {required, ...standardDateRules}
+  deadline: {required, ...standardDateRules}
 }
 const v$ = useVuelidate(rules, formData)
 const isFormValid = computed<boolean>(() => !v$.value.$invalid)
 
-watchEffect(() => {
-  formData.deadlineFormatted = formatDate(new Date(formData.deadline))
-  v$.value.deadlineFormatted.$touch()
-
-  console.log('is date, is future, is realistic:',
-      formData.deadlineFormatted,
-      standardDateRules.isDate(formData.deadlineFormatted),
-      standardDateRules.futureDate(formData.deadlineFormatted),
-      standardDateRules.realisticDate(formData.deadlineFormatted),
-  )
+watch(deadlineRaw, (newValue) => {
+  formData.deadline = formatDate(new Date(newValue || ''))
+  v$.value.deadline.$touch()
 })
 
 </script>
@@ -82,7 +75,7 @@ watchEffect(() => {
     <div class="mb-3">
       <div>
           <VueDatePicker
-              v-model="formData.deadline"
+              v-model="deadlineRaw"
               label="Deadline"
               placeholder="Deadline"
               :dark="true"
@@ -92,12 +85,13 @@ watchEffect(() => {
           >
             <template #dp-input="{ value, onInput, onEnter, onTab, onClear }">
               <v-text-field
-                  v-model="formData.deadlineFormatted"
+                  v-model="formData.deadline"
                   label="Deadline"
                   readonly
-                  :error-messages="v$.deadlineFormatted.$errors.map(e => e.$message || 'Please select a realistic date in the future')"
+                  :error-messages="v$.deadline.$errors.map(e => e.$message || 'Please select a realistic date in the future')"
                   required
-                  @change="v$.deadlineFormatted.$touch"
+                  @blur="v$.deadline.$touch"
+                  @change="v$.deadline.$touch"
               />
             </template>
 
@@ -111,7 +105,7 @@ watchEffect(() => {
       <v-btn
           size="large"
           color="secondary"
-          @click="handleSubmit"
+          type="submit"
           :disabled="!isFormValid"
       >
         Create

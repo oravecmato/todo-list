@@ -1,3 +1,8 @@
-import {ToDoList} from "./ToDoList";
+export interface ToDoListDefinition {
+    id?: string
+    name: string
+}
 
-export type ToDoListDefinition = Omit<ToDoList, 'items'|'id'>
+export type ToDoListDefinitionStrict = ToDoListDefinition & {
+    id: string
+}

@@ -1,6 +1,9 @@
 * {
   box-sizing: border-box;
 }
+html, body {
+  background: #242424;
+}
 a {
   &, &:hover, &:active, &:focus, &:visited {
     color: #ffffff;

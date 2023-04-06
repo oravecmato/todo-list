@@ -1,29 +1,35 @@
 <script setup>
-import AppBar from "./components/layouts/AppBar.vue"
-import Breadcrumbs from "./components/layouts/Breadcrumbs.vue";
-import Footer from "./components/layouts/Footer.vue";
+import AppRoot from "./components/layouts/AppRoot.vue"
+import {inject} from "vue";
+import {AppKeyInjectionKey} from "@/symbols";
 
-import { ref } from 'vue'
-
-const msg = ref('Hello World!')
+const appKey = inject(AppKeyInjectionKey)
 </script>
 
 <template>
 
   <v-app app>
-    <AppBar />
+  <Suspense>
 
-    <v-main class="fill-height">
-      <v-container fluid class="container">
+    <AppRoot :key="appKey" />
 
-        <Breadcrumbs />
+    <template #fallback>
 
-        <router-view />
+      <v-overlay
+          :model-value="true"
+          class="align-center justify-center"
+      >
+        <v-progress-circular
+            color="primary"
+            indeterminate
+            size="64"
+        ></v-progress-circular>
+      </v-overlay>
 
-      </v-container>
-    </v-main>
+    </template>
 
-<!--    <Footer />-->
+  </Suspense>
+
   </v-app>
 
 </template>

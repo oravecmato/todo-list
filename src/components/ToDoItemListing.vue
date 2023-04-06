@@ -6,29 +6,10 @@ import {SelectOption} from "../typings/SelectOption";
 import {computed, nextTick, ref} from "vue";
 import {TDL_ITEM_FILTER_ACTIVE, TDL_ITEM_FILTER_ALL, TDL_ITEM_FILTER_COMPLETED} from "../constants";
 import {VTextField} from "vuetify/components";
-import {ToDoItem} from "../typings/ToDoItem";
+import {ToDoItemFilter} from "../typings/ToDoItemFilter";
+import {useToDoListStore} from "../stores/ToDoList";
 
-const items: ToDoItem[] = [{
-  id: 'adsf122323',
-  title: 'This must be done first.',
-  text: 'Lorem ipsum...',
-  completed: false,
-  deadline: '14.3.2023 23:59'
-},{
-  id: 'afgfsf122323',
-  title: 'This must be done second.',
-  text: 'Lorem ipsum...',
-  completed: false,
-  deadline: '09.4.2023'
-},{
-  id: 'addf122323',
-  title: 'This must be done last.',
-  text: 'Lorem ipsum...',
-  completed: true,
-  deadline: '04.6.2023'
-}
-]
-
+const store = useToDoListStore()
 const filterOptions:SelectOption[] = [
   {
     title: 'Active',
@@ -44,7 +25,6 @@ const filterOptions:SelectOption[] = [
   },
 ]
 
-const filterValue = ref<string|null>(null)
 const showSearchBox = ref<boolean>(false)
 const searchBoxParent = ref<HTMLDivElement|null>(null)
 
@@ -65,21 +45,21 @@ const displaySearchBox = (): void => {
   })
 }
 
+const noItemsMsg = computed<string>(() =>  `No items ${store.search ? 'match your search criteria' : (store.activeFilter !== TDL_ITEM_FILTER_ALL ? 'match the selected filter' : 'found, feel free to add some.')} ` + (
+store.search && store.activeFilter !== TDL_ITEM_FILTER_ALL && store.toDoItemsFilteredWithFullTextSearch(store.search ?? '', false).length ? `<br />Didn't you forget to remove the "${store.activeFilter}" filter?` : ''))
+
 const search = (e: Event): void => {
-  console.log(e.target)
-  showSearchBox.value = false
+  store.useSearchProxy((e.target as HTMLInputElement).value)
 }
 
-const displayedItems = computed<ToDoItem[]>(() => {
-  switch (filterValue.value) {
-    case TDL_ITEM_FILTER_ACTIVE:
-      return items.filter(({deadline, completed}) => !completed && Date.parse(deadline) > Date.parse(new Date().toISOString()))
-    case TDL_ITEM_FILTER_COMPLETED:
-      return items.filter(({completed}) => completed)
-    default:
-      return items
-  }
-})
+const hideSearchBox = (): void => {
+  showSearchBox.value = false
+  store.removeSearchProxy()
+}
+const hideSearchBoxIfEmpty = (e: Event): void => {
+  if (!(e.target as HTMLInputElement)!.value.trim())
+    hideSearchBox()
+}
 
 
 const showRemoveItemModal = (itemId: string): void => {
@@ -89,18 +69,18 @@ const showRemoveItemModal = (itemId: string): void => {
 }
 
 const deleteItem = (): void => {
-  console.log('Item ' + itemToDeleteId.value + 'deleted!')
+  if (itemToDeleteId.value)
+  store.removeToDoItem(itemToDeleteId.value)
 }
 
 const setDone = (itemId: string): void => {
-  alert(itemId)
+  store.setToDoItemDone(itemId)
 }
-
 
 </script>
 <template>
   <div class="todo-list-items">
-    <div class="todo-list-items__filter">
+    <div class="todo-list-items__filter" v-show="store.toDoList.items.length">
       <v-row>
         <v-col
             cols="12"
@@ -114,8 +94,8 @@ const setDone = (itemId: string): void => {
           <v-select
               id="filterSelect"
               :items="filterOptions"
-              v-model="filterValue"
-              :label="filterValue ? undefined : 'Filter'"
+              v-model="store.activeFilter"
+              label="Filter"
               density="comfortable"
               hide-details="true"
               variant="outlined"
@@ -144,9 +124,9 @@ const setDone = (itemId: string): void => {
                     append-inner-icon="mdi-magnify"
                     single-line
                     hide-details
-                    @click:append-inner="search"
-                    @keydown.enter="search"
-                    @blur="showSearchBox = false"
+                    @keyup="search"
+                    @keyup.esc.prevent="hideSearchBox"
+                    @blur="hideSearchBoxIfEmpty"
                 ></v-text-field>
               </div>
             </Transition>
@@ -170,12 +150,22 @@ const setDone = (itemId: string): void => {
     <div class="todo-list-items__listing">
       <v-row>
         <ToDoItemCard
-            v-for="item in displayedItems"
+            v-for="item in store.toDoItems"
             :model-value="item"
             @@delete="showRemoveItemModal"
             @@done="setDone"
             :key="item.id" />
       </v-row>
+
+      <p v-if="!store.toDoItems.length" class="mt-6">
+        <v-alert
+            variant="tonal"
+            color="info"
+        >
+          <span style="display: block" v-html="noItemsMsg"></span>
+        </v-alert>
+      </p>
+
     </div>
 
   </div>

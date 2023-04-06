@@ -1,9 +1,16 @@
+import {Ref, ref} from "vue";
+import {useRouter} from "vue-router";
+
 const localStorageFakeAuthKey = 'fake-auth';
 
 interface FakeAuthInterface {
     getFakeUserId: () => string
     signOutForever: () => void
+    appKey: Ref<string>
 }
+
+const generateAppKey = (): string => new Date().getTime().toString()
+const appKey = ref<string>(generateAppKey())
 
 /**
  * This functionality has been proposed with the aim of imitating the authentication in order
@@ -24,6 +31,11 @@ export const useFakeAuth = (): FakeAuthInterface => {
             return userId
         },
 
-        signOutForever: (): void => localStorage.removeItem(localStorageFakeAuthKey)
+        signOutForever: (): void => {
+            localStorage.removeItem(localStorageFakeAuthKey)
+            appKey.value = generateAppKey()
+        },
+
+        appKey
     }
 }

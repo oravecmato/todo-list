@@ -86,15 +86,18 @@ const getRemainingTimeColor = computed<string>(() => {
 
       </v-card-text>
 
-      <div v-if="!modelValue.completed">
+      <div>
         <v-btn
+            v-if="!modelValue.completed"
             icon
             color="green"
             size="small"
             @click="emit('@done', modelValue.id)"
+            class="scale-on-hover"
         >
           <v-icon>mdi-check-bold</v-icon>
         </v-btn>
+        <v-icon size="x-large" v-else>mdi-check-decagram</v-icon>
 
       </div>
 

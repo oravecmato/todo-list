@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import AppRoot from "./components/layouts/AppRoot.vue"
 import {inject} from "vue";
 import {AppKeyInjectionKey} from "@/symbols";

@@ -73,7 +73,7 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
 <template>
   <div style="width: 100%; min-height: 100vh;" ref="target">
     <div class="container select-none">
-      <button @click="reset">
+      <button @click="() => {resetSidebarStyles(false);}">
         Reset
       </button>
       <div ref="sidebar" class="overlay" :class="{ animated: !isSwiping }" :style="{ transform: `translateX(${translateX})`, opacity }">

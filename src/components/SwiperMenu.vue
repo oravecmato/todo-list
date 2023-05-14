@@ -119,6 +119,8 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
     <p class="status">
       Direction: {{ direction ? direction : '-' }} <br>
       lengthX: {{ lengthX }} | lengthY: {{ lengthY }} <br>
+      translateX: {{ translateX }} <br>
+      Opacity: {{ opacity }} <br>
       Menu is shown: {{ menuShown}}
     </p>
   </div>

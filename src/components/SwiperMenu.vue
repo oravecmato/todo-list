@@ -75,44 +75,53 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
 </script>
 
 <template>
-  <div style="width: 100%; min-height: 100vh;" ref="target">
-    <div class="container select-none">
-      <button @click="() => {resetSidebarStyles(false);}">
-        Reset
+      <button @click="menuShown = !menuShown">
+        {{ menuShown ? 'Hide ' : 'Show '}} sidebar
       </button>
-      <div ref="sidebar" class="overlay" :class="['animated', !isSwiping ? 'noAnimation' : '']" :style="{ transform: `translateX(${translateX})`, opacity }">
-        <p>Swipe right</p>
-      </div>
-    </div>
+
+      <transition
+          enter="animated"
+          leave="animated"
+          enter-from="itxnfull"
+          leave-to="itxnfull"
+          enter-to="itx-"
+          leave-from="itx0"
+          ref="sidebar"
+          :class="['overlay animated', !isSwiping ? 'noAnimation' : '']" :style="{ transform: `translateX(${translateX})`, opacity }"
+          v-show="menuShown"
+      >
+        Menu goes here!
+      </transition>
+
+<!--      <div ref="sidebar" class="overlay" :class="['animated', !isSwiping ? 'noAnimation' : '']" :style="{ transform: `translateX(${translateX})`, opacity }">-->
+<!--        <p>Swipe right</p>-->
+<!--      </div>-->
     <p class="status">
       Direction: {{ direction ? direction : '-' }} <br>
       lengthX: {{ lengthX }} | lengthY: {{ lengthY }} <br>
       Menu is shown: {{ menuShown}}
     </p>
-  </div>
 </template>
 
 <style scoped>
-.container {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px dashed #ccc;
-  overflow: hidden;
-}
-
 .overlay {
   top: 0;
   left: 0;
-  width: 100%;
+  width: 90vw;
   height: 100%;
-  position: absolute;
+  position: fixed;
   background: #3fb983;
 }
-
-.overlay.animated {
-  transition: all 0.2s ease-in-out;
+.itx0 {
+  transform: translateX(0) !important;
+  opacity: 1 !important;
+}
+.itxnfull {
+  transform: translateX(-90vw) !important;
+  opacity: 0 !important;
+}
+.animated {
+  transition: all 0.5s ease-out;
 }
 .noAnimation {
   transition: none !important;

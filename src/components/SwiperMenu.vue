@@ -75,6 +75,24 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
 </script>
 
 <template>
+
+  <Transition
+      enter-active-class="animated"
+      leave-active-class="animated"
+      enter-from-class="itxnfull"
+      leave-to-class="itxnfull"
+      enter-to-class="itx-"
+      leave-from-class="itx0"
+  >
+    <div
+        :class="['overlay animated v2']"
+        v-show="menuShown"
+    >
+      Menu goes here!
+    </div>
+  </Transition>
+
+
   <Transition
       enter-active-class="animated"
       leave-active-class="animated"
@@ -137,7 +155,9 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
   overflow:hidden;
   white-space: nowrap;
 }
-
+.v2 {
+  background: blue;
+}
 .status {
   text-align: center;
 }

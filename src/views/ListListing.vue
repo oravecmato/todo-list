@@ -46,9 +46,7 @@ const createList = (formData: ToDoListDefinition): void => {
 </script>
 <template>
 
-  <section style="border: blueviolet 1px dashed; padding: 20px;">
     <SwiperMenu />
-  </section>
 
   <section class="todo-list-listing">
     <h1 class="text-h3 mb-8">My ToDo Lists</h1>

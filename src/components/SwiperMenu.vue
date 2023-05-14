@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, onMounted, ref} from 'vue'
+import {computed, onMounted, Ref, ref} from 'vue'
 import { useSwipe } from '@vueuse/core'
 
 const target = ref<HTMLElement | null>(null)
@@ -36,15 +36,15 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
           if (lengthX.value < 0) {
             // if (!menuShown.value) {
             menuShown.value = true;
-            const length = Math.min(Math.abs(lengthX.value), sidebarWidth.value);
-            translateX.value = `-${sidebarWidth.value - length}px`;
-            opacity.value = Math.min(0.1 + length / sidebarWidth.value, 1);
+            const length = Math.min(Math.abs(lengthX.value), (sidebarWidth as Ref<number>).value);
+            translateX.value = `-${(sidebarWidth as Ref<number>).value - length}px`;
+            opacity.value = Math.min(0.1 + length / (sidebarWidth as Ref<number>).value, 1);
             // }
           }
           else {
-            const length = Math.min(lengthX.value, sidebarWidth.value);
+            const length = Math.min(lengthX.value, (sidebarWidth as Ref<number>).value);
             translateX.value = `-${length}px`;
-            opacity.value = Math.min(1.1 - length / sidebarWidth.value, 1);
+            opacity.value = Math.min(1.1 - length / (sidebarWidth as Ref<number>).value, 1);
           }
         }
       },

@@ -24,7 +24,7 @@ onMounted(() => {
   resetSidebarStyles(false);
 })
 
-const dynamicStyles = computed(() => menuShown.value ? { transform: `translateX(${translateX})`, opacity } : {});
+const dynamicStyles = computed(() => menuShown.value ? { transform: `translateX(${translateX.value})`, opacity: opacity.value } : {});
 
 const { direction, isSwiping, lengthX, lengthY } = useSwipe(
     target, {

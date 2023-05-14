@@ -28,6 +28,8 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
     target, {
       passive: false,
       onSwipe(e: TouchEvent) {
+        e.preventDefault(); // Order of sidebars render matters
+
         if (sidebarWidth.value) {
           if (lengthX.value < 0) {
             if (!menuShown.value) {
@@ -47,8 +49,10 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
         }
       },
       onSwipeEnd(e: TouchEvent) {
+        e.preventDefault(); // Order of sidebars render matters
+
         if (!menuShown.value) {
-          if (lengthX.value < 0 && sidebarWidth.value && (Math.abs(lengthX.value) / sidebarWidth.value) >= 0.5) {
+          if (lengthX.value < 0 && sidebarWidth.value && (Math.abs(lengthX.value) / sidebarWidth.value) >= 0.42) {
             resetSidebarStyles(true);
             menuShown.value = true;
           }
@@ -57,7 +61,7 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
             menuShown.value = false;
           }
         } else {
-          if (lengthX.value > 0 && sidebarWidth.value && (lengthX.value / sidebarWidth.value) >= 0.5) {
+          if (lengthX.value > 0 && sidebarWidth.value && (lengthX.value / sidebarWidth.value) >= 0.42) {
             resetSidebarStyles(false);
             menuShown.value = false;
           }
@@ -76,7 +80,7 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
       <button @click="() => {resetSidebarStyles(false);}">
         Reset
       </button>
-      <div ref="sidebar" class="overlay" :class="{ animated: !isSwiping }" :style="{ transform: `translateX(${translateX})`, opacity }">
+      <div ref="sidebar" class="overlay" :class="['animated', !isSwiping ? 'noAnimation' : '']" :style="{ transform: `translateX(${translateX})`, opacity }">
         <p>Swipe right</p>
       </div>
     </div>
@@ -109,6 +113,9 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
 
 .overlay.animated {
   transition: all 0.2s ease-in-out;
+}
+.noAnimation {
+  transition: none !important;
 }
 
 .overlay > p {

@@ -35,7 +35,12 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
         if (sidebarWidth.value || lengthX.value < 0) {
           if (lengthX.value < 0) {
             // if (!menuShown.value) {
-            menuShown.value = true;
+
+            if (!sidebarWidth.value) {
+              menuShown.value = true;
+              resetSidebarStyles(false);
+            }
+
             const length = Math.min(Math.abs(lengthX.value), (sidebarWidth as Ref<number>).value);
             translateX.value = `-${(sidebarWidth as Ref<number>).value - length}px`;
             opacity.value = Math.min(0.1 + length / (sidebarWidth as Ref<number>).value, 1);
@@ -51,11 +56,12 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
       onSwipeEnd(e: TouchEvent) {
         e.preventDefault(); // Order of sidebars render matters
 
-          if (lengthX.value < 0 && sidebarWidth.value && (Math.abs(lengthX.value) / sidebarWidth.value) >= 0.42) {
+          if (lengthX.value < 0 && sidebarWidth.value &&  (Math.abs(lengthX.value) / sidebarWidth.value) >= 0.42) {
             resetSidebarStyles(true);
             menuShown.value = true;
           }
           else {
+            alert('Sorry for this, ' + JSON.stringify(sidebarWidth.value))
             resetSidebarStyles(false);
             menuShown.value = false;
           }
@@ -94,7 +100,7 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
       leave-to-class="itxnfull"
       enter-to-class="itx0"
       leave-from-class="itx0"
-      :css="false"
+      :css="!isSwiping"
   >
     <div
         ref="sidebar"

@@ -24,6 +24,8 @@ onMounted(() => {
   resetSidebarStyles(false);
 })
 
+const dynamicStyles = computed(() => menuShown.value ? { transform: `translateX(${translateX})`, opacity } : {});
+
 const { direction, isSwiping, lengthX, lengthY } = useSwipe(
     target, {
       passive: false,
@@ -76,6 +78,10 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
         v-show="menuShown"
     >
       Menu goes here!
+      <br><br>
+      <button @click="menuShown = !menuShown">
+        {{ menuShown ? 'Hide ' : 'Show '}} sidebar
+      </button>
     </div>
   </Transition>
 
@@ -90,10 +96,14 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
   >
     <div
         ref="sidebar"
-        :class="['overlay animated', !isSwiping ? 'noAnimation' : '']" :style="{ transform: `translateX(${translateX})`, opacity }"
+        :class="['overlay animated', !isSwiping ? 'noAnimation' : '']" :style="dynamicStyles"
         v-show="menuShown"
     >
       Menu goes here!
+      <br><br>
+      <button @click="menuShown = !menuShown">
+        {{ menuShown ? 'Hide ' : 'Show '}} sidebar
+      </button>
     </div>
   </Transition>
 

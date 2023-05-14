@@ -32,7 +32,7 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
       onSwipe(e: TouchEvent) {
         e.preventDefault(); // Order of sidebars render matters
 
-        if (sidebarWidth.value) {
+        if (sidebarWidth.value || lengthX.value < 0) {
           if (lengthX.value < 0) {
             // if (!menuShown.value) {
             menuShown.value = true;

@@ -64,6 +64,7 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
 </script>
 
 <template>
+  <div class="wind" ref="target">
 
 <!--  <Transition-->
 <!--      enter-active-class="animated"-->
@@ -120,9 +121,21 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
       lengthX: {{ lengthX }} | lengthY: {{ lengthY }} <br>
       Menu is shown: {{ menuShown}}
     </p>
+  </div>
 </template>
 
 <style scoped>
+.wind {
+  position: fixed;
+  z-index: 39;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .overlay {
   top: 0;
   left: 0;

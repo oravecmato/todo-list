@@ -119,14 +119,23 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
   height: 100%;
   position: fixed;
   background: #3fb983;
+  z-index: 50;
 }
+/*.itx0 {*/
+/*  transform: translateX(0) !important;*/
+/*  opacity: 1 !important;*/
+/*}*/
+/*.itxnfull {*/
+/*  transform: translateX(-90vw) !important;*/
+/*  opacity: 0 !important;*/
+/*}*/
 .itx0 {
-  transform: translateX(0) !important;
-  opacity: 1 !important;
+  transform: translateX(0);
+  opacity: 1;
 }
 .itxnfull {
-  transform: translateX(-90vw) !important;
-  opacity: 0 !important;
+  transform: translateX(-90vw);
+  opacity: 0;
 }
 .animated {
   transition: all 0.5s ease-out;
@@ -142,8 +151,9 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
   overflow:hidden;
   white-space: nowrap;
 }
-.v2 {
+.overlay.v2 {
   background: blue;
+  z-index: 40;
 }
 .status {
   text-align: center;

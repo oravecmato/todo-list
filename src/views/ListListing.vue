@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ToDoListCard from "../components/ToDoListCard.vue"
 import ConfirmDialog from "../components/ConfirmDialog.vue"
+import SwiperMenu from "../components/SwiperMenu.vue";
 import AddNewListForm from "../components/AddNewListForm.vue"
 import {computed, ref} from "vue";
 import {ToDoListDefinition} from "../typings/ToDoListDefinition";
@@ -44,6 +45,10 @@ const createList = (formData: ToDoListDefinition): void => {
 }
 </script>
 <template>
+
+  <section style="border: blueviolet 1px dashed; padding: 20px;">
+    <SwiperMenu />
+  </section>
 
   <section class="todo-list-listing">
     <h1 class="text-h3 mb-8">My ToDo Lists</h1>

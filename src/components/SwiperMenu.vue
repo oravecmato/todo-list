@@ -127,6 +127,7 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
 <style scoped>
 .wind {
   position: fixed;
+  background: #1a1a1a;
   z-index: 39;
   left: 0;
   top: 0;

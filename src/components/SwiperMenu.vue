@@ -75,23 +75,26 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
 </script>
 
 <template>
+  <Transition
+      enter-active-class="animated"
+      leave-active-class="animated"
+      enter-from-class="itxnfull"
+      leave-to-class="itxnfull"
+      enter-to-class="itx-"
+      leave-from-class="itx0"
+  >
+    <div
+        ref="sidebar"
+        :class="['overlay animated', !isSwiping ? 'noAnimation' : '']" :style="{ transform: `translateX(${translateX})`, opacity }"
+        v-show="menuShown"
+    >
+      Menu goes here!
+    </div>
+  </Transition>
+
       <button @click="menuShown = !menuShown">
         {{ menuShown ? 'Hide ' : 'Show '}} sidebar
       </button>
-
-      <transition
-          enter="animated"
-          leave="animated"
-          enter-from="itxnfull"
-          leave-to="itxnfull"
-          enter-to="itx-"
-          leave-from="itx0"
-          ref="sidebar"
-          :class="['overlay animated', !isSwiping ? 'noAnimation' : '']" :style="{ transform: `translateX(${translateX})`, opacity }"
-          v-show="menuShown"
-      >
-        Menu goes here!
-      </transition>
 
 <!--      <div ref="sidebar" class="overlay" :class="['animated', !isSwiping ? 'noAnimation' : '']" :style="{ transform: `translateX(${translateX})`, opacity }">-->
 <!--        <p>Swipe right</p>-->

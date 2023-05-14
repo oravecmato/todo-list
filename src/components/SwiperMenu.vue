@@ -32,26 +32,23 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
 
         if (sidebarWidth.value) {
           if (lengthX.value < 0) {
-            if (!menuShown.value) {
-              const length = Math.min(Math.abs(lengthX.value), sidebarWidth.value);
-              translateX.value = `-${sidebarWidth.value - length}px`;
-              opacity.value = Math.min(0.1 + length / sidebarWidth.value, 1);
-            }
+            // if (!menuShown.value) {
+            menuShown.value = true;
+            const length = Math.min(Math.abs(lengthX.value), sidebarWidth.value);
+            translateX.value = `-${sidebarWidth.value - length}px`;
+            opacity.value = Math.min(0.1 + length / sidebarWidth.value, 1);
+            // }
           }
           else {
-            if (menuShown.value) {
-              const length = Math.min(lengthX.value, sidebarWidth.value);
-              translateX.value = `-${length}px`;
-              opacity.value = Math.min(1.1 - length / sidebarWidth.value, 1);
-            }
-
+            const length = Math.min(lengthX.value, sidebarWidth.value);
+            translateX.value = `-${length}px`;
+            opacity.value = Math.min(1.1 - length / sidebarWidth.value, 1);
           }
         }
       },
       onSwipeEnd(e: TouchEvent) {
         e.preventDefault(); // Order of sidebars render matters
 
-        if (!menuShown.value) {
           if (lengthX.value < 0 && sidebarWidth.value && (Math.abs(lengthX.value) / sidebarWidth.value) >= 0.42) {
             resetSidebarStyles(true);
             menuShown.value = true;
@@ -60,18 +57,8 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
             resetSidebarStyles(false);
             menuShown.value = false;
           }
-        } else {
-          if (lengthX.value > 0 && sidebarWidth.value && (lengthX.value / sidebarWidth.value) >= 0.42) {
-            resetSidebarStyles(false);
-            menuShown.value = false;
-          }
-          else {
-            resetSidebarStyles(true);
-            menuShown.value = true;
-          }
-        }
       },
-    })
+    });
 </script>
 
 <template>

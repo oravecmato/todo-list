@@ -65,25 +65,25 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
 
 <template>
 
-  <Transition
-      enter-active-class="animated"
-      leave-active-class="animated"
-      enter-from-class="itxnfull"
-      leave-to-class="itxnfull"
-      enter-to-class="itx-"
-      leave-from-class="itx0"
-  >
-    <div
-        :class="['overlay animated v2']"
-        v-show="menuShown"
-    >
-      Menu goes here!
-      <br><br>
-      <button @click="menuShown = !menuShown">
-        {{ menuShown ? 'Hide ' : 'Show '}} sidebar
-      </button>
-    </div>
-  </Transition>
+<!--  <Transition-->
+<!--      enter-active-class="animated"-->
+<!--      leave-active-class="animated"-->
+<!--      enter-from-class="itxnfull"-->
+<!--      leave-to-class="itxnfull"-->
+<!--      enter-to-class="itx-"-->
+<!--      leave-from-class="itx0"-->
+<!--  >-->
+<!--    <div-->
+<!--        :class="['overlay animated v2']"-->
+<!--        v-show="menuShown"-->
+<!--    >-->
+<!--      Menu goes here!-->
+<!--      <br><br>-->
+<!--      <button @click="menuShown = !menuShown">-->
+<!--        {{ menuShown ? 'Hide ' : 'Show '}} sidebar-->
+<!--      </button>-->
+<!--    </div>-->
+<!--  </Transition>-->
 
 
   <Transition
@@ -91,12 +91,13 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
       leave-active-class="animated"
       enter-from-class="itxnfull"
       leave-to-class="itxnfull"
-      enter-to-class="itx-"
+      enter-to-class="itx0"
       leave-from-class="itx0"
+      :css="false"
   >
     <div
         ref="sidebar"
-        :class="['overlay animated', !isSwiping ? 'noAnimation' : '']" :style="dynamicStyles"
+        :class="['overlay', !isSwiping ? 'animated' : '']" :style="dynamicStyles"
         v-show="menuShown"
     >
       Menu goes here!

@@ -27,6 +27,7 @@ const assignSidebarWidthValue = () => {
 
 onMounted(() => {
   resetSidebarStyles(false);
+  alert('Version 135')
 })
 
 const dynamicStyles = computed(() => menuShown.value ? { transform: `translateX(${translateX.value})`, opacity: opacity.value } : {});

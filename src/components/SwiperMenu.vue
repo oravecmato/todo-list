@@ -27,7 +27,7 @@ const assignSidebarWidthValue = () => {
 
 onMounted(() => {
   resetSidebarStyles(false);
-  alert('Version 2.5')
+  alert('Version 2.6')
 })
 
 const dynamicStyles = computed(() => sidebarShown.value && isSwiping.value ? { transform: `translateX(${translateX.value})`, opacity: opacity.value } : {});
@@ -103,7 +103,7 @@ const onTouchStart = (e: TouchEvent) => {
 const isSwiping = computed<boolean>(() => !!touchData.distanceX);
 
 const onTouchMove = (e: TouchEvent) => {
-  if (e.touches.length === 1 && e.touches[0].identifier === touchData.identifier) {
+  if (e.touches.length === 1) {
     const touch = e.touches[0];
     touchData.distanceX = touch.clientX - (touchData.startXPos as number);
     handleSwipe();
@@ -112,16 +112,17 @@ const onTouchMove = (e: TouchEvent) => {
 
 
 const onTouchEnd = (e: TouchEvent) => {
-  alert('ok')
-  if (e.touches.length === 1 && e.touches[0].identifier === touchData.identifier) {
+  if (e.touches.length === 1) {
 
     if (touchData.distanceX > 0 && sidebarWidth.value &&  (touchData.distanceX / sidebarWidth.value) >= 0.42) {
       resetSidebarStyles(true);
       sidebarShown.value = true;
+      alert('cond 1')
     }
     else {
       resetSidebarStyles(false);
       sidebarShown.value = false;
+      alert('cond 2')
     }
 
   } else {

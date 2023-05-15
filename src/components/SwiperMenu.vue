@@ -8,14 +8,14 @@ const sidebarWidth = ref<number | null>(null);
 const translateX = ref('-100%')
 const opacity = ref(0)
 
-const menuShown = ref(false);
+const sidebarShown = ref(false);
 
 function resetSidebarStyles(expanded: boolean) {
   if (expanded) {
     translateX.value = '0'
     opacity.value = 1
   } else {
-    translateX.value = `-${sidebarWidth.value}px`
+    translateX.value = sidebarWidth.value ? `-${sidebarWidth.value}px` : '-100%'
     opacity.value = 0
   }
 }
@@ -27,22 +27,26 @@ const assignSidebarWidthValue = () => {
 
 onMounted(() => {
   resetSidebarStyles(false);
-  alert('Version 136')
+  alert('Version 137')
 })
 
-const dynamicStyles = computed(() => menuShown.value && isSwiping.value ? { transform: `translateX(${translateX.value})`, opacity: opacity.value } : {});
+const dynamicStyles = computed(() => sidebarShown.value && isSwiping.value ? { transform: `translateX(${translateX.value})`, opacity: opacity.value } : {});
+
+const toggleSidebar = () => {
+  sidebarShown.value = !sidebarShown.value;
+  alert('Toggled!')
+}
 
 const { direction, isSwiping, lengthX, lengthY } = useSwipe(
     target, {
       passive: false,
       onSwipe(e: TouchEvent) {
-        // e.preventDefault(); // Order of sidebars render matters
 
         if (sidebarWidth.value || lengthX.value < 0) {
           if (lengthX.value < 0) {
 
-            if (!menuShown.value) {
-              menuShown.value = true;
+            if (!sidebarShown.value) {
+              sidebarShown.value = true;
               resetSidebarStyles(false);
             }
 
@@ -58,15 +62,14 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
         }
       },
       onSwipeEnd(e: TouchEvent) {
-        // e.preventDefault(); // Order of sidebars render matters
 
           if (lengthX.value < 0 && sidebarWidth.value &&  (Math.abs(lengthX.value) / sidebarWidth.value) >= 0.42) {
             resetSidebarStyles(true);
-            menuShown.value = true;
+            sidebarShown.value = true;
           }
           else {
             resetSidebarStyles(false);
-            menuShown.value = false;
+            sidebarShown.value = false;
           }
       },
     });
@@ -88,7 +91,7 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
     <div
         ref="sidebar"
         :class="['overlay', !isSwiping ? 'animated' : '']" :style="dynamicStyles"
-        v-show="menuShown"
+        v-show="sidebarShown"
     >
       Menu goes here!
       <br>
@@ -99,12 +102,12 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
         lengthX: {{ lengthX }} | lengthY: {{ lengthY }} <br>
         translateX: {{ translateX }} <br>
         Opacity: {{ opacity }} <br>
-        Sidebar is shown: {{ menuShown}} br
+        Sidebar is shown: {{ sidebarShown}} <br>
         Sidebar width: {{ sidebarWidth }} <br>
         <br>
         <br>
-        <button @click="menuShown = !menuShown">
-          {{ menuShown ? 'Hide ' : 'Show '}} sidebar
+        <button @click="sidebarShown = !sidebarShown">
+          {{ sidebarShown ? 'Hide ' : 'Show '}} sidebar
         </button>
       </p>
     </div>
@@ -119,12 +122,12 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
       lengthX: {{ lengthX }} | lengthY: {{ lengthY }} <br>
       translateX: {{ translateX }} <br>
       Opacity: {{ opacity }} <br>
-      Sidebar is shown: {{ menuShown}} br
+      Sidebar is shown: {{ sidebarShown}} br
       Sidebar width: {{ sidebarWidth }} <br>
       <br>
       <br>
-      <button @click="menuShown = !menuShown">
-        {{ menuShown ? 'Hide ' : 'Show '}} sidebar
+      <button @click="toggleSidebar">
+        {{ sidebarShown ? 'Hide ' : 'Show '}} sidebar
       </button>
     </p>
   </div>
@@ -152,14 +155,6 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
   background: #3fb983;
   z-index: 50;
 }
-/*.itx0 {*/
-/*  transform: translateX(0) !important;*/
-/*  opacity: 1 !important;*/
-/*}*/
-/*.itxnfull {*/
-/*  transform: translateX(-90vw) !important;*/
-/*  opacity: 0 !important;*/
-/*}*/
 .itx0 {
   transform: translateX(0);
   opacity: 1;

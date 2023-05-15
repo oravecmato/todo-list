@@ -30,7 +30,7 @@ onMounted(() => {
   alert('Version 135')
 })
 
-const dynamicStyles = computed(() => menuShown.value ? { transform: `translateX(${translateX.value})`, opacity: opacity.value } : {});
+const dynamicStyles = computed(() => menuShown.value && isSwiping.value ? { transform: `translateX(${translateX.value})`, opacity: opacity.value } : {});
 
 const { direction, isSwiping, lengthX, lengthY } = useSwipe(
     target, {

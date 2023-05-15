@@ -158,7 +158,7 @@ const handleSwipe = () => {
   <div class="wind" ref="target"
        @touchstart="onTouchStart"
        @touchend="onTouchEnd"
-       @touchMove="onTouchMove"
+       @touchmove="onTouchMove"
   >
 
   <Transition

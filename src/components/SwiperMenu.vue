@@ -27,7 +27,7 @@ const assignSidebarWidthValue = () => {
 
 onMounted(() => {
   resetSidebarStyles(false);
-  alert('Version 2.2')
+  alert('Version 2.3')
 })
 
 const dynamicStyles = computed(() => sidebarShown.value && isSwiping.value ? { transform: `translateX(${translateX.value})`, opacity: opacity.value } : {});
@@ -158,7 +158,7 @@ const handleSwipe = () => {
   <div class="wind" ref="target"
        @touchstart="onTouchStart"
        @touchend="onTouchEnd"
-       @touchMove="onTouchMove"
+       @touchmove="onTouchMove"
   >
 
   <Transition

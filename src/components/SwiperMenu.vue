@@ -139,6 +139,24 @@ const onTouchEnd = (e: TouchEvent) => {
   touchData.distanceX = 0;
 }
 
+// const onTouchEnd = (direction: 'left' | 'right') => {
+//     if (direction === 'right') {
+//       resetSidebarStyles(true);
+//       sidebarShown.value = true;
+//     }
+//     else {
+//       resetSidebarStyles(false);
+//       sidebarShown.value = false;
+//     }
+//
+//   touchData.identifier = null;
+//   touchData.startXPos = null;
+//   touchData.startYPos = null;
+//   touchData.distanceX = 0;
+//
+//   alert(direction)
+// }
+
 const handleSwipe = () => {
   if (isSwiping.value) {
     if (sidebarWidth.value || touchData.distanceX > 0) {
@@ -167,6 +185,7 @@ const handleSwipe = () => {
        @touchstart="onTouchStart"
        @touchend="onTouchEnd"
        @touchmove="onTouchMove"
+       v-touch:swipe="onTouchEnd"
   >
 
   <Transition

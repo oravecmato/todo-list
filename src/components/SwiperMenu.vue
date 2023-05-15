@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {computed, onMounted, Ref, ref} from 'vue'
-import { useSwipe } from '@vueuse/core'
+import { usePointerSwipe as useSwipe } from '@vueuse/core'
 
 const target = ref<HTMLElement | null>(null)
 const sidebar = ref<HTMLElement | null>(null)
@@ -27,7 +27,7 @@ const assignSidebarWidthValue = () => {
 
 onMounted(() => {
   resetSidebarStyles(false);
-  alert('Version 138')
+  alert('Version 139')
 })
 
 const dynamicStyles = computed(() => sidebarShown.value && isSwiping.value ? { transform: `translateX(${translateX.value})`, opacity: opacity.value } : {});
@@ -41,33 +41,32 @@ const handle = () => {
   alert('Aspon som tu')
 }
 
-const { direction, isSwiping, lengthX, lengthY } = useSwipe(
+const { direction, isSwiping, distanceX } = useSwipe(
     target, {
-      passive: false,
-      onSwipe(e: TouchEvent) {
+      onSwipe(e: PointerEvent) {
 
-        if (sidebarWidth.value || lengthX.value < 0) {
-          if (lengthX.value < 0) {
+        if (sidebarWidth.value || distanceX.value < 0) {
+          if (distanceX.value < 0) {
 
             if (!sidebarShown.value) {
               sidebarShown.value = true;
               resetSidebarStyles(false);
             }
 
-            const length = Math.min(Math.abs(lengthX.value), (sidebarWidth as Ref<number>).value);
+            const length = Math.min(Math.abs(distanceX.value), (sidebarWidth as Ref<number>).value);
             translateX.value = `-${(sidebarWidth as Ref<number>).value - length}px`;
             opacity.value = Math.min(0.1 + length / (sidebarWidth as Ref<number>).value, 1);
           }
           else {
-            const length = Math.min(lengthX.value, (sidebarWidth as Ref<number>).value);
+            const length = Math.min(distanceX.value, (sidebarWidth as Ref<number>).value);
             translateX.value = `-${length}px`;
             opacity.value = Math.min(1.1 - length / (sidebarWidth as Ref<number>).value, 1);
           }
         }
       },
-      onSwipeEnd(e: TouchEvent) {
+      onSwipeEnd(e: PointerEvent) {
 
-          if (lengthX.value < 0 && sidebarWidth.value &&  (Math.abs(lengthX.value) / sidebarWidth.value) >= 0.42) {
+          if (distanceX.value < 0 && sidebarWidth.value &&  (Math.abs(distanceX.value) / sidebarWidth.value) >= 0.42) {
             resetSidebarStyles(true);
             sidebarShown.value = true;
           }
@@ -103,7 +102,7 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
 
       <p class="status">
         Direction: {{ direction ? direction : '-' }} <br>
-        lengthX: {{ lengthX }} | lengthY: {{ lengthY }} <br>
+        distanceX: {{ distanceX }} | lengthY: {{ lengthY }} <br>
         translateX: {{ translateX }} <br>
         Opacity: {{ opacity }} <br>
         Sidebar is shown: {{ sidebarShown}} <br>
@@ -123,7 +122,7 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
 <!--      </div>-->
     <p class="status">
       Direction: {{ direction ? direction : '-' }} <br>
-      lengthX: {{ lengthX }} | lengthY: {{ lengthY }} <br>
+      distanceX: {{ distanceX }} | lengthY: {{ lengthY }} <br>
       translateX: {{ translateX }} <br>
       Opacity: {{ opacity }} <br>
       Sidebar is shown: {{ sidebarShown}} br

@@ -27,7 +27,7 @@ const assignSidebarWidthValue = () => {
 
 onMounted(() => {
   resetSidebarStyles(false);
-  alert('Version 137')
+  alert('Version 138')
 })
 
 const dynamicStyles = computed(() => sidebarShown.value && isSwiping.value ? { transform: `translateX(${translateX.value})`, opacity: opacity.value } : {});
@@ -35,6 +35,10 @@ const dynamicStyles = computed(() => sidebarShown.value && isSwiping.value ? { t
 const toggleSidebar = () => {
   sidebarShown.value = !sidebarShown.value;
   alert('Toggled!')
+}
+
+const handle = () => {
+  alert('Aspon som tu')
 }
 
 const { direction, isSwiping, lengthX, lengthY } = useSwipe(
@@ -126,8 +130,12 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
       Sidebar width: {{ sidebarWidth }} <br>
       <br>
       <br>
-      <button @click="toggleSidebar">
+      <button @click="toggleSidebar" class="v-btn v-btn--flat">
         {{ sidebarShown ? 'Hide ' : 'Show '}} sidebar
+      </button>
+      &nbsp;
+      <button @click="handle">
+        just anything
       </button>
     </p>
   </div>

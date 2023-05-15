@@ -111,6 +111,8 @@ const onTouchMove = (e: TouchEvent) => {
     touchData.currentXPos = touch.clientX;
     touchData.distanceX = touch.clientX - (touchData.startXPos as number);
     handleSwipe();
+  } else {
+    alert(JSON.stringify(e.touches));
   }
 }
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, onMounted, Ref, ref} from 'vue'
+import {computed, onMounted, reactive, Ref, ref, watch} from 'vue'
 import { usePointerSwipe as useSwipe } from '@vueuse/core'
 
 const target = ref<HTMLElement | null>(null)
@@ -27,59 +27,137 @@ const assignSidebarWidthValue = () => {
 
 onMounted(() => {
   resetSidebarStyles(false);
-  alert('Version 139')
+  alert('Version 2.1')
 })
 
 const dynamicStyles = computed(() => sidebarShown.value && isSwiping.value ? { transform: `translateX(${translateX.value})`, opacity: opacity.value } : {});
 
 const toggleSidebar = () => {
   sidebarShown.value = !sidebarShown.value;
-  alert('Toggled!')
 }
 
 const handle = () => {
   alert('Aspon som tu')
 }
 
-const { direction, isSwiping, distanceX } = useSwipe(
-    target, {
-      onSwipe(e: PointerEvent) {
+// const { direction, isSwiping, distanceX } = useSwipe(
+//     target, {
+//       onSwipe(e: PointerEvent) {
+//
+//         if (sidebarWidth.value || distanceX.value < 0) {
+//           if (distanceX.value < 0) {
+//
+//             if (!sidebarShown.value) {
+//               sidebarShown.value = true;
+//               resetSidebarStyles(false);
+//             }
+//
+//             const length = Math.min(Math.abs(distanceX.value), (sidebarWidth as Ref<number>).value);
+//             translateX.value = `-${(sidebarWidth as Ref<number>).value - length}px`;
+//             opacity.value = Math.min(0.1 + length / (sidebarWidth as Ref<number>).value, 1);
+//           }
+//           else {
+//             const length = Math.min(distanceX.value, (sidebarWidth as Ref<number>).value);
+//             translateX.value = `-${length}px`;
+//             opacity.value = Math.min(1.1 - length / (sidebarWidth as Ref<number>).value, 1);
+//           }
+//         }
+//       },
+//       onSwipeEnd(e: PointerEvent) {
+//
+//           if (distanceX.value < 0 && sidebarWidth.value &&  (Math.abs(distanceX.value) / sidebarWidth.value) >= 0.42) {
+//             resetSidebarStyles(true);
+//             sidebarShown.value = true;
+//           }
+//           else {
+//             resetSidebarStyles(false);
+//             sidebarShown.value = false;
+//           }
+//       },
+//     });
 
-        if (sidebarWidth.value || distanceX.value < 0) {
-          if (distanceX.value < 0) {
 
-            if (!sidebarShown.value) {
-              sidebarShown.value = true;
-              resetSidebarStyles(false);
-            }
+const touchData = reactive<{
+  identifier: number | null,
+  startXPos: number | null,
+  startYPos: number | null,
+  distanceX: number
+}>({
+  identifier: null,
+  startXPos: null,
+  startYPos: null,
+  distanceX: 0
+});
 
-            const length = Math.min(Math.abs(distanceX.value), (sidebarWidth as Ref<number>).value);
-            translateX.value = `-${(sidebarWidth as Ref<number>).value - length}px`;
-            opacity.value = Math.min(0.1 + length / (sidebarWidth as Ref<number>).value, 1);
-          }
-          else {
-            const length = Math.min(distanceX.value, (sidebarWidth as Ref<number>).value);
-            translateX.value = `-${length}px`;
-            opacity.value = Math.min(1.1 - length / (sidebarWidth as Ref<number>).value, 1);
-          }
+const onTouchStart = (e: TouchEvent) => {
+  if (e.touches.length === 1) {
+    const touch = e.touches[0];
+
+    touchData.startXPos = touch.clientX;
+    touchData.startYPos = touch.clientY;
+    touchData.identifier = touch.identifier;
+    touchData.distanceX = 0;
+  }
+}
+
+const isSwiping = computed<boolean>(() => !!touchData.distanceX);
+
+const onTouchMove = (e: TouchEvent) => {
+  if (e.touches.length === 1 && e.touches[0].identifier === touchData.identifier) {
+    const touch = e.touches[0];
+    touchData.distanceX = touch.clientX - (touchData.startXPos as number);
+    handleSwipe();
+  }
+}
+
+
+const onTouchEnd = (e: TouchEvent) => {
+  if (e.touches.length === 1 && e.touches[0].identifier === touchData.identifier) {
+
+    if (touchData.distanceX < 0 && sidebarWidth.value &&  (Math.abs(touchData.distanceX) / sidebarWidth.value) >= 0.42) {
+      resetSidebarStyles(true);
+      sidebarShown.value = true;
+    }
+    else {
+      resetSidebarStyles(false);
+      sidebarShown.value = false;
+    }
+
+    touchData.identifier = null;
+    touchData.startXPos = null;
+    touchData.startYPos = null;
+  }
+}
+
+const handleSwipe = () => {
+  if (isSwiping.value) {
+    if (sidebarWidth.value || touchData.distanceX < 0) {
+      if (touchData.distanceX < 0) {
+
+        if (!sidebarShown.value) {
+          sidebarShown.value = true;
+          resetSidebarStyles(false);
         }
-      },
-      onSwipeEnd(e: PointerEvent) {
 
-          if (distanceX.value < 0 && sidebarWidth.value &&  (Math.abs(distanceX.value) / sidebarWidth.value) >= 0.42) {
-            resetSidebarStyles(true);
-            sidebarShown.value = true;
-          }
-          else {
-            resetSidebarStyles(false);
-            sidebarShown.value = false;
-          }
-      },
-    });
+        const length = Math.min(Math.abs(touchData.distanceX), (sidebarWidth as Ref<number>).value);
+        translateX.value = `-${(sidebarWidth as Ref<number>).value - length}px`;
+        opacity.value = Math.min(0.1 + length / (sidebarWidth as Ref<number>).value, 1);
+      } else {
+        const length = Math.min(touchData.distanceX, (sidebarWidth as Ref<number>).value);
+        translateX.value = `-${length}px`;
+        opacity.value = Math.min(1.1 - length / (sidebarWidth as Ref<number>).value, 1);
+      }
+    }
+  }
+}
 </script>
 
 <template>
-  <div class="wind" ref="target">
+  <div class="wind" ref="target"
+       @touchstart="onTouchStart"
+       @touchend="onTouchEnd"
+       @touchMove="onTouchMove"
+  >
 
   <Transition
       enter-active-class="animated"
@@ -101,8 +179,7 @@ const { direction, isSwiping, distanceX } = useSwipe(
       <hr><br>
 
       <p class="status">
-        Direction: {{ direction ? direction : '-' }} <br>
-        distanceX: {{ distanceX }} <br>
+        Touch data: {{ touchData }} <br>
         translateX: {{ translateX }} <br>
         Opacity: {{ opacity }} <br>
         Sidebar is shown: {{ sidebarShown}} <br>
@@ -117,12 +194,8 @@ const { direction, isSwiping, distanceX } = useSwipe(
   </Transition>
 
 
-<!--      <div ref="sidebar" class="overlay" :class="['animated', !isSwiping ? 'noAnimation' : '']" :style="{ transform: `translateX(${translateX})`, opacity }">-->
-<!--        <p>Swipe right</p>-->
-<!--      </div>-->
     <p class="status">
-      Direction: {{ direction ? direction : '-' }} <br>
-      distanceX: {{ distanceX }} <br>
+      Touch data: {{ touchData }} <br>
       translateX: {{ translateX }} <br>
       Opacity: {{ opacity }} <br>
       Sidebar is shown: {{ sidebarShown}} br

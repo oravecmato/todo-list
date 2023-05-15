@@ -27,7 +27,7 @@ const assignSidebarWidthValue = () => {
 
 onMounted(() => {
   resetSidebarStyles(false);
-  alert('Version 2.3')
+  alert('Version 2.4')
 })
 
 const dynamicStyles = computed(() => sidebarShown.value && isSwiping.value ? { transform: `translateX(${translateX.value})`, opacity: opacity.value } : {});
@@ -107,8 +107,6 @@ const onTouchMove = (e: TouchEvent) => {
     const touch = e.touches[0];
     touchData.distanceX = touch.clientX - (touchData.startXPos as number);
     handleSwipe();
-  } else {
-    alert(`${e.touches.length}, ${e.touches[0].identifier}, ${touchData.identifier}`)
   }
 }
 
@@ -116,7 +114,7 @@ const onTouchMove = (e: TouchEvent) => {
 const onTouchEnd = (e: TouchEvent) => {
   if (e.touches.length === 1 && e.touches[0].identifier === touchData.identifier) {
 
-    if (touchData.distanceX < 0 && sidebarWidth.value &&  (Math.abs(touchData.distanceX) / sidebarWidth.value) >= 0.42) {
+    if (touchData.distanceX > 0 && sidebarWidth.value &&  (touchData.distanceX / sidebarWidth.value) >= 0.42) {
       resetSidebarStyles(true);
       sidebarShown.value = true;
     }
@@ -133,19 +131,19 @@ const onTouchEnd = (e: TouchEvent) => {
 
 const handleSwipe = () => {
   if (isSwiping.value) {
-    if (sidebarWidth.value || touchData.distanceX < 0) {
-      if (touchData.distanceX < 0) {
+    if (sidebarWidth.value || touchData.distanceX > 0) {
+      if (touchData.distanceX > 0) {
 
         if (!sidebarShown.value) {
           sidebarShown.value = true;
           resetSidebarStyles(false);
         }
 
-        const length = Math.min(Math.abs(touchData.distanceX), (sidebarWidth as Ref<number>).value);
+        const length = Math.min(touchData.distanceX, (sidebarWidth as Ref<number>).value);
         translateX.value = `-${(sidebarWidth as Ref<number>).value - length}px`;
         opacity.value = Math.min(0.1 + length / (sidebarWidth as Ref<number>).value, 1);
       } else {
-        const length = Math.min(touchData.distanceX, (sidebarWidth as Ref<number>).value);
+        const length = Math.min(Math.abs(touchData.distanceX), (sidebarWidth as Ref<number>).value);
         translateX.value = `-${length}px`;
         opacity.value = Math.min(1.1 - length / (sidebarWidth as Ref<number>).value, 1);
       }

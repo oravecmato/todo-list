@@ -105,8 +105,20 @@ const onTouchStart = (e: TouchEvent) => {
 
 const isSwiping = computed<boolean>(() => !!touchData.distanceX);
 
+// const onTouchMove = (e: TouchEvent) => {
+//   if (e.touches.length === 1 && Math.abs(e.touches[0].clientX - (touchData.currentXPos as number)) >= 10) {
+//     const touch = e.touches[0];
+//     touchData.currentXPos = touch.clientX;
+//     touchData.distanceX = touch.clientX - (touchData.startXPos as number);
+//     handleSwipe();
+//   } else {
+//     alert(JSON.stringify(e.touches));
+//   }
+// }
+
+
 const onTouchMove = (e: TouchEvent) => {
-  if (e.touches.length === 1 && Math.abs(e.touches[0].clientX - (touchData.currentXPos as number)) >= 10) {
+  if (e.touches.length === 1) {
     const touch = e.touches[0];
     touchData.currentXPos = touch.clientX;
     touchData.distanceX = touch.clientX - (touchData.startXPos as number);

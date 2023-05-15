@@ -39,9 +39,8 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
 
         if (sidebarWidth.value || lengthX.value < 0) {
           if (lengthX.value < 0) {
-            // if (!menuShown.value) {
 
-            if (!sidebarWidth.value) {
+            if (!menuShown.value) {
               menuShown.value = true;
               resetSidebarStyles(false);
             }
@@ -66,7 +65,6 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
             menuShown.value = true;
           }
           else {
-            alert('Sorry for this, ' + JSON.stringify(sidebarWidth.value))
             resetSidebarStyles(false);
             menuShown.value = false;
           }
@@ -76,27 +74,6 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
 
 <template>
   <div class="wind" ref="target">
-
-<!--  <Transition-->
-<!--      enter-active-class="animated"-->
-<!--      leave-active-class="animated"-->
-<!--      enter-from-class="itxnfull"-->
-<!--      leave-to-class="itxnfull"-->
-<!--      enter-to-class="itx-"-->
-<!--      leave-from-class="itx0"-->
-<!--  >-->
-<!--    <div-->
-<!--        :class="['overlay animated v2']"-->
-<!--        v-show="menuShown"-->
-<!--    >-->
-<!--      Menu goes here!-->
-<!--      <br><br>-->
-<!--      <button @click="menuShown = !menuShown">-->
-<!--        {{ menuShown ? 'Hide ' : 'Show '}} sidebar-->
-<!--      </button>-->
-<!--    </div>-->
-<!--  </Transition>-->
-
 
   <Transition
       enter-active-class="animated"

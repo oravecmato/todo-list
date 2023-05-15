@@ -4,7 +4,7 @@ import { useSwipe } from '@vueuse/core'
 
 const target = ref<HTMLElement | null>(null)
 const sidebar = ref<HTMLElement | null>(null)
-const sidebarWidth = computed(() => sidebar.value?.offsetWidth)
+const sidebarWidth = ref<number | null>(null);
 const translateX = ref('-100%')
 const opacity = ref(0)
 
@@ -18,6 +18,11 @@ function resetSidebarStyles(expanded: boolean) {
     translateX.value = `-${sidebarWidth.value}px`
     opacity.value = 0
   }
+}
+
+const assignSidebarWidthValue = () => {
+  if (!sidebar.value) return;
+  sidebarWidth.value = sidebar.value.offsetWidth;
 }
 
 onMounted(() => {
@@ -100,6 +105,7 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
       leave-to-class="itxnfull"
       enter-to-class="itx0"
       leave-from-class="itx0"
+      @enter="assignSidebarWidthValue"
       :css="!isSwiping"
   >
     <div

@@ -35,7 +35,7 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
     target, {
       passive: false,
       onSwipe(e: TouchEvent) {
-        e.preventDefault(); // Order of sidebars render matters
+        // e.preventDefault(); // Order of sidebars render matters
 
         if (sidebarWidth.value || lengthX.value < 0) {
           if (lengthX.value < 0) {
@@ -48,7 +48,6 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
             const length = Math.min(Math.abs(lengthX.value), (sidebarWidth as Ref<number>).value);
             translateX.value = `-${(sidebarWidth as Ref<number>).value - length}px`;
             opacity.value = Math.min(0.1 + length / (sidebarWidth as Ref<number>).value, 1);
-            // }
           }
           else {
             const length = Math.min(lengthX.value, (sidebarWidth as Ref<number>).value);
@@ -58,7 +57,7 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
         }
       },
       onSwipeEnd(e: TouchEvent) {
-        e.preventDefault(); // Order of sidebars render matters
+        // e.preventDefault(); // Order of sidebars render matters
 
           if (lengthX.value < 0 && sidebarWidth.value &&  (Math.abs(lengthX.value) / sidebarWidth.value) >= 0.42) {
             resetSidebarStyles(true);
@@ -101,18 +100,15 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
         Opacity: {{ opacity }} <br>
         Sidebar is shown: {{ menuShown}} br
         Sidebar width: {{ sidebarWidth }} <br>
+        <br>
+        <br>
+        <button @click="menuShown = !menuShown">
+          {{ menuShown ? 'Hide ' : 'Show '}} sidebar
+        </button>
       </p>
-      <br>
-      <hr><br>
-      <button @click="menuShown = !menuShown">
-        {{ menuShown ? 'Hide ' : 'Show '}} sidebar
-      </button>
     </div>
   </Transition>
 
-      <button @click="menuShown = !menuShown">
-        {{ menuShown ? 'Hide ' : 'Show '}} sidebar
-      </button>
 
 <!--      <div ref="sidebar" class="overlay" :class="['animated', !isSwiping ? 'noAnimation' : '']" :style="{ transform: `translateX(${translateX})`, opacity }">-->
 <!--        <p>Swipe right</p>-->
@@ -124,6 +120,11 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
       Opacity: {{ opacity }} <br>
       Sidebar is shown: {{ menuShown}} br
       Sidebar width: {{ sidebarWidth }} <br>
+      <br>
+      <br>
+      <button @click="menuShown = !menuShown">
+        {{ menuShown ? 'Hide ' : 'Show '}} sidebar
+      </button>
     </p>
   </div>
 </template>

@@ -27,14 +27,13 @@ const assignSidebarWidthValue = () => {
 
 onMounted(() => {
   resetSidebarStyles(false);
-  alert('Version 139')
+  alert('Version 2.1')
 })
 
 const dynamicStyles = computed(() => sidebarShown.value && isSwiping.value ? { transform: `translateX(${translateX.value})`, opacity: opacity.value } : {});
 
 const toggleSidebar = () => {
   sidebarShown.value = !sidebarShown.value;
-  alert('Toggled!')
 }
 
 const handle = () => {

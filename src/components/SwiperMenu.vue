@@ -27,7 +27,7 @@ const assignSidebarWidthValue = () => {
 
 onMounted(() => {
   resetSidebarStyles(false);
-  alert('Version 2.7')
+  alert('Version 3.0')
 })
 
 const dynamicStyles = computed(() => sidebarShown.value && isSwiping.value ? { transform: `translateX(${translateX.value})`, opacity: opacity.value } : {});
@@ -111,6 +111,8 @@ const onTouchMove = (e: TouchEvent) => {
     touchData.currentXPos = touch.clientX;
     touchData.distanceX = touch.clientX - (touchData.startXPos as number);
     handleSwipe();
+  } else {
+    alert(JSON.stringify(e.touches));
   }
 }
 
@@ -183,8 +185,7 @@ const handleSwipe = () => {
 <template>
   <div class="wind" ref="target"
        @touchstart="onTouchStart"
-       @touchend="onTouchEnd"
-       @touchmove="onTouchMove"
+       v-touch:drag="onTouchMove"
        v-touch:swipe="onTouchEnd"
   >
 

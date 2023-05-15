@@ -102,7 +102,7 @@ const { direction, isSwiping, distanceX } = useSwipe(
 
       <p class="status">
         Direction: {{ direction ? direction : '-' }} <br>
-        distanceX: {{ distanceX }} | lengthY: {{ lengthY }} <br>
+        distanceX: {{ distanceX }} <br>
         translateX: {{ translateX }} <br>
         Opacity: {{ opacity }} <br>
         Sidebar is shown: {{ sidebarShown}} <br>
@@ -122,7 +122,7 @@ const { direction, isSwiping, distanceX } = useSwipe(
 <!--      </div>-->
     <p class="status">
       Direction: {{ direction ? direction : '-' }} <br>
-      distanceX: {{ distanceX }} | lengthY: {{ lengthY }} <br>
+      distanceX: {{ distanceX }} <br>
       translateX: {{ translateX }} <br>
       Opacity: {{ opacity }} <br>
       Sidebar is shown: {{ sidebarShown}} br

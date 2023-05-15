@@ -108,7 +108,19 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
         v-show="menuShown"
     >
       Menu goes here!
-      <br><br>
+      <br>
+      <hr><br>
+
+      <p class="status">
+        Direction: {{ direction ? direction : '-' }} <br>
+        lengthX: {{ lengthX }} | lengthY: {{ lengthY }} <br>
+        translateX: {{ translateX }} <br>
+        Opacity: {{ opacity }} <br>
+        Sidebar is shown: {{ menuShown}} br
+        Sidebar width: {{ sidebarWidth }} <br>
+      </p>
+      <br>
+      <hr><br>
       <button @click="menuShown = !menuShown">
         {{ menuShown ? 'Hide ' : 'Show '}} sidebar
       </button>
@@ -127,7 +139,8 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
       lengthX: {{ lengthX }} | lengthY: {{ lengthY }} <br>
       translateX: {{ translateX }} <br>
       Opacity: {{ opacity }} <br>
-      Menu is shown: {{ menuShown}}
+      Sidebar is shown: {{ menuShown}} br
+      Sidebar width: {{ sidebarWidth }} <br>
     </p>
   </div>
 </template>
